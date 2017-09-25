@@ -1,67 +1,62 @@
 body {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  height: 2em;
-  margin-top: -1em;
-  width: 40%;
-  margin-left: -20%;
-  line-height: 2em;
-  text-align: center;
-    /*background: url("../img/geometry2.png");*/;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    height: 2em;
+    margin-top: -1em;
+    width: 40%;
+    margin-left: -20%;
+    line-height: 2em;
+    text-align: center;
+    font-family: "Oxygen", sans-serif;
+    /*background: url("../img/geometry2.png");*/
 }
 
-.myButton {
-  background-color: #42d9f4;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  font-size: 17px;
-  margin: 30px 15px;
+h1 {
+    font-size: 40px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
 }
 
 table {
-  display: inline-block;
-  table-layout: fixed;
-}
-
-th {
-  height: 20px;
-  padding: 10px;
-  font-size: 20px;
+    display: inline-block;
+    table-layout: fixed;
 }
 
 table,
 th,
 td {
-  border: 1px solid grey;
-  border-radius: 6px;
-  border-spacing: .5px;
-  width: 350px;
-  justify-content: center;
-}
-
-td {
-  font-size: 17px;
+    border: 1px dotted grey;
+    border-radius: 6px;
+    border-spacing: .5px;
+    width: 350px;
+    justify-content: center;
 }
 
 th {
-  color: white;
-  background-color: #42d9f4;
+    height: 20px;
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: #42d9f4;
 }
 
 td {
-  height: 20px;
-  padding: 5px;
+    font-size: 17px;
+    height: 20px;
+    padding: 5px;
 }
 
-h1 {
-  font-size: 40px;
-  margin-bottom: 25px;
-  padding-bottom: 20px;
+.myButton {
+    background-color: #42d9f4;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-size: 17px;
+    margin: 30px 15px;
 }

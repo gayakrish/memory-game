@@ -23,10 +23,11 @@ let difficulty = "Easy";
  */
 let starCount = 3;
 let selectedStarRating = [];
-const starRating = [[8, 12, 16],
-                    [16, 24, 32],
-                    [45, 60, 75]
-                   ];
+const starRating = [
+    [8, 12, 16],
+    [16, 24, 32],
+    [45, 60, 75]
+];
 
 //default background color
 //TODO: store in local storage to revert back to same color on refresh
@@ -44,7 +45,6 @@ const difficultyKey = "difficulty";
 let storedScore = [];
 
 // cards for the game based on the difficulty level
-//TODO: remove unwanted card images from img directory
 const easyArray = ["book", "spring", "recycling", "switch",
     "book", "spring", "recycling", "switch"
 ];
@@ -70,6 +70,131 @@ initializeScoreBoard();
 
 //to close the dropdown when there is a click elsewhere in the document
 $(document).on("click", hideDropdownMenus);
+
+/*
+ * Refresh/Resets the game. Shuffles the cards, displays the grid
+ * and attaches listener to each card
+ */
+function resetBoard() {
+
+    cardsArray.length = 0;
+    var output = "";
+    matchCount = 0;
+    //localStorage.clear();
+
+    resetMoveCount();
+    resetStar();
+
+    cardsArray = shuffle(getDifficultyArray(difficulty));
+    for (let i = 0; i < cardsArray.length; i++) {
+        var className = cardsArray[i];
+        output += `<img src="img/${className}.png" class="card hidden" id="${className}">`
+    }
+
+    displayGrid(difficulty);
+    $(".deck").html(output);
+    cardsArray = $(".deck").children().toArray();
+    setUpCardListener();
+    $(".restart").on("click", resetBoard);
+}
+
+/*
+ * Increments moveCount on every card click and displays the number of moves
+ */
+function setMoveCount() {
+    moveCount += 1;
+    $(".moves").text(moveCount);
+}
+
+/*
+ * Initialized the moveCount to zero
+ */
+function resetMoveCount() {
+    moveCount = 0;
+    $(".moves").text("");
+}
+
+/*
+ * Displays the number of stars based on the starRating
+ */
+function setStar() {
+    if (moveCount > selectedStarRating[0]) {
+        if ((moveCount < selectedStarRating[1]) && (starCount === 3)) {
+            starCount = 2;
+            $("#star1").hide();
+        } else if ((moveCount > selectedStarRating[2]) && (starCount === 2)) {
+            starCount = 1;
+            $("#star2").hide();
+        }
+    }
+}
+
+/*
+ * Sets the display back to 3 stars
+ */
+function resetStar() {
+    starCount = 3;
+    $("#star1").show();
+    $("#star2").show();
+}
+
+/*
+ * Display the cards on the page
+ *   - shuffle the list of cards using the provided "shuffle" method below
+ *   - loop through each card and create its HTML
+ *   - add each card"s HTML to the page
+ */
+
+// Shuffle function from http://stackoverflow.com/a/245097"
+function shuffle(array) {
+    var currentIndex = array.length,
+        temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
+}
+
+/*
+ * Displays the cards according to the grid size (based on difficulty)
+ */
+function displayGrid(difficulty) {
+    if (difficulty === easy) {
+        if ($(".deck").hasClass("hard")) {
+            $(".deck").removeClass("hard");
+        }
+        $(".deck").addClass("easy");
+    } else if (difficulty === hard) {
+        if ($(".deck").hasClass("easy")) {
+            $(".deck").removeClass("easy");
+        }
+        $(".deck").addClass("hard");
+    } else {
+
+        if ($(".deck").hasClass("easy")) {
+            $(".deck").removeClass("easy");
+        }
+
+        if ($(".deck").hasClass("easy")) {
+            $(".deck").removeClass("easy");
+        }
+    }
+    $(".displayDifficulty").html(difficulty);
+}
+
+/*
+ * Attaches click listener to each card in the deck
+ */
+function setUpCardListener() {
+    for (let i = 0; i < cardsArray.length; i++) {
+        $(cardsArray[i]).one("click", clickCard);
+    }
+}
 
 /*
  * Attach click listener to the NavBar menu items
@@ -129,15 +254,6 @@ function selectMenu(event) {
  */
 function setBackgroundColor(color) {
     $(".deck").css("background-color", color);
-}
-
-/*
- * Attaches click listener to each card in the deck
- */
-function setUpCardListener() {
-    for (let i = 0; i < cardsArray.length; i++) {
-        $(cardsArray[i]).one("click", clickCard);
-    }
 }
 
 /*
@@ -208,60 +324,6 @@ function updateLocalStorage() {
 }
 
 /*
- * Refresh/Resets the game. Shuffles the cards, displays the grid
- * and attaches listener to each card
- */
-function resetBoard() {
-
-    cardsArray.length = 0;
-    var output = "";
-    matchCount = 0;
-    //localStorage.clear();
-
-    resetMoveCount();
-    resetStar();
-
-    cardsArray = shuffle(getDifficultyArray(difficulty));
-    for (let i = 0; i < cardsArray.length; i++) {
-        var className = cardsArray[i];
-        output += `<img src="img/${className}.png" class="card hidden" id="${className}">`
-    }
-
-    displayGrid(difficulty);
-    $(".deck").html(output);
-    cardsArray = $(".deck").children().toArray();
-    setUpCardListener();
-    $(".restart").on("click", resetBoard);
-}
-
-/*
- * Displays the cards according to the grid size (based on difficulty)
- */
-function displayGrid(difficulty) {
-    if (difficulty === easy) {
-        if ($(".deck").hasClass("hard")) {
-            $(".deck").removeClass("hard");
-        }
-        $(".deck").addClass("easy");
-    } else if (difficulty === hard) {
-        if ($(".deck").hasClass("easy")) {
-            $(".deck").removeClass("easy");
-        }
-        $(".deck").addClass("hard");
-    } else {
-
-        if ($(".deck").hasClass("easy")) {
-            $(".deck").removeClass("easy");
-        }
-
-        if ($(".deck").hasClass("easy")) {
-            $(".deck").removeClass("easy");
-        }
-    }
-    $(".displayDifficulty").html(difficulty);
-}
-
-/*
  * On clicking each card, the cards are checked for match. If one card is clicked
  * the board waits for the 2nd card to be clicked. If they match, then appropriate
  * animation is done. If no more cards are there to be flipped, game is over and
@@ -306,46 +368,6 @@ function clickCard(event) {
 }
 
 /*
- * Increments moveCount on every card click and displays the number of moves
- */
-function setMoveCount() {
-    moveCount += 1;
-    $(".moves").text(moveCount);
-}
-
-/*
- * Initialized the moveCount to zero
- */
-function resetMoveCount() {
-    moveCount = 0;
-    $(".moves").text("");
-}
-
-/*
- * Displays the number of stars based on the starRating
- */
-function setStar() {
-    if (moveCount > selectedStarRating[0]) {
-        if ((moveCount < selectedStarRating[1]) && (starCount === 3)) {
-            starCount = 2;
-            $("#star1").hide();
-        } else if ((moveCount > selectedStarRating[2]) && (starCount === 2)) {
-            starCount = 1;
-            $("#star2").hide();
-        }
-    }
-}
-
-/*
- * Sets the display back to 3 stars
- */
-function resetStar() {
-    starCount = 3;
-    $("#star1").show();
-    $("#star2").show();
-}
-
-/*
  * Animates the cards for the match and the click listener is removed to avoid
  * the player clicking again on the open cards. If all the cards are matched, true
  * is returned, else false
@@ -360,7 +382,6 @@ function setCardMatch(card1, card2) {
     if (matchCount === cardsArray.length)
         return true;
     return false;
-
 }
 
 /*
@@ -399,35 +420,3 @@ function hideCards() {
 function clearOpenCards() {
     openCards.length = 0;
 }
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card"s HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/245097"
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card"s symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card"s symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
