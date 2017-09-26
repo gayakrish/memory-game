@@ -21,17 +21,22 @@
         	let url = document.URL;
         	let idx1 = url.indexOf('?moves=');
         	let idx2 = url.indexOf('&stars=');
-        	let moves, stars;
+        	let idx3 = url.indexOf('&timer=');
+        	let moves, stars, timer;
 
         	if (idx1 !== -1) {
         	  moves = url.substring(idx1+7,idx2);
         	}
 
         	if(idx2 !== -1) {
-        		stars = url.substring(idx2+7, url.length);
+        		stars = url.substring(idx2+7, idx3);
         	}
 
-        	$('.count').html(`With ${moves} Moves and ${stars} Stars`);
+        	if(idx3 !== -1) {
+        		timer = url.substring(idx3+7, url.length);
+        	}
+
+        	$('.count').html(`With ${moves} Moves and ${stars} Stars in ${timer} time`);
         });
       </script>
 

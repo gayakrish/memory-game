@@ -23,16 +23,18 @@
           	localStorage.name = "score";
           	var output = "";
           	const scoreCardKeys = ["score1", "score2", "score3", "score4", "score5"];
-          	output += `<tr> <th> S.No </th> <th> Level </th> <th> Moves </th> </tr>`;
+          	output += `<tr> <th> S.No </th> <th> Level </th> <th> Moves </th> <th> Time </th> </tr>`;
           	if(localStorage) {
           		if(localStorage.length > 0) {
            		for(let i = 0; i < 5; i++) {
            			let scoreObj = localStorage.getItem(scoreCardKeys[i]);
            			if(scoreObj !== null) {
             			let idx1 = scoreObj.indexOf(",");
+                  let idx2 = scoreObj.lastIndexOf(",");
             			let level = scoreObj.substring(0, idx1);
-            			let moves = scoreObj.substring(idx1+1, scoreObj.length);
-            			output += `<tr> <td> ${i+1} </td> <td> ${level} </td> <td> ${moves} </td> </tr>`;
+            			let moves = scoreObj.substring(idx1+1, idx2);
+                  let time = scoreObj.substring(idx2+1, scoreObj.length);
+            			output += `<tr> <td> ${i+1} </td> <td> ${level} </td> <td> ${moves} </td>  <td> ${time} </td> </tr>`;
             		}
            		}
            	}

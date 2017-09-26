@@ -29,6 +29,10 @@ const starRating = [
     [45, 60, 75]
 ];
 
+let timer;
+let isTimer = false;
+let timerValue;
+
 //default background color
 //TODO: store in local storage to revert back to same color on refresh
 let backgroundColor = "#d6fbfe";
@@ -84,6 +88,7 @@ function resetBoard() {
 
     resetMoveCount();
     resetStar();
+    resetTimer();
 
     cardsArray = shuffle(getDifficultyArray(difficulty));
     for (let i = 0; i < cardsArray.length; i++) {
@@ -139,6 +144,65 @@ function resetStar() {
 }
 
 /*
+ * Start the timer
+ */
+function startTimer() {
+    if(!isTimer) {
+        isTimer = true;
+        let startTime = new Date().getTime();
+
+        //this is to ensure that timer starts immediately first time
+        displayTimer(startTime);
+
+        //console.log("time is "+ startTime.getHours() +":" + startTime.getMinutes() + ":" + startTime.getSeconds());
+        timer = setInterval(function() {
+            console.log("set interval");
+            displayTimer(startTime);
+        }, 1000);
+
+        console.log("timer returned by setInterval "+ timer);
+    }
+}
+
+/*
+ * Display timer information on the game screen
+ */
+function displayTimer(startTime) {
+    console.log("display timer");
+    let currentTime = new Date().getTime();
+    let ms = currentTime - startTime;
+
+    let currentHours = Math.floor(ms / 1000 / 60 / 60);
+    ms -= currentHours * 1000 * 60 * 60;
+
+    let currentMins = Math.floor(ms / 1000 / 60);
+    ms -= currentMins * 1000 * 60;
+
+    let currentSecs = Math.floor(ms / 1000);
+    ms -= currentSecs * 1000;
+
+    currentHours = (currentHours < 10) ? "0" + currentHours : currentHours;
+    currentMins = (currentMins < 10) ? "0" + currentMins : currentMins;
+    currentSecs = (currentSecs < 10) ? "0" + currentSecs : currentSecs;
+    timerValue = `${currentHours}:${currentMins}:${currentSecs}`;
+    console.log("timer value " + timerValue);
+    $(".timer").text(timerValue);
+}
+
+/*
+ * Resets the timer
+ */
+function resetTimer() {
+    if(isTimer) {
+        console.log("inside clear interval " + timer);
+        clearInterval(timer);
+        timerValue = "00:00:00";
+        $(".timer").text("00:00:00");
+        isTimer = false;
+    }
+}
+
+/*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
@@ -180,8 +244,8 @@ function displayGrid(difficulty) {
             $(".deck").removeClass("easy");
         }
 
-        if ($(".deck").hasClass("easy")) {
-            $(".deck").removeClass("easy");
+        if ($(".deck").hasClass("hard")) {
+            $(".deck").removeClass("hard");
         }
     }
     $(".displayDifficulty").html(difficulty);
@@ -313,7 +377,7 @@ function saveIntoLocalStore() {
  * the first score entry is removed and the new score is pushed in
  */
 function updateLocalStorage() {
-    let scoreObj = [difficulty, moveCount];
+    let scoreObj = [difficulty, moveCount, timerValue];
     let storeNum = storedScore.length;
     if (storeNum === maxStoreNumber) {
         storedScore.shift();
@@ -331,7 +395,7 @@ function updateLocalStorage() {
  * If the cards do not match, appropriate animation is performed and cards are closed.
  */
 function clickCard(event) {
-
+    startTimer();
     hideDropdownMenus();
     event.stopPropagation();
 
@@ -389,8 +453,9 @@ function setCardMatch(card1, card2) {
  */
 function displayBoardWin() {
     setTimeout(function() {
-        window.location.href = `win.html?moves=${moveCount}&stars=${starCount}`;
+        window.location.href = `win.html?moves=${moveCount}&stars=${starCount}&timer=${timerValue}`;
         //alert("Congratulations! You Won");
+        resetTimer();
     }, 400);
 }
 

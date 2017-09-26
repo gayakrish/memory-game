@@ -134,7 +134,7 @@ body {
 
 .score-panel {
     text-align: left;
-    width: 250px;
+    width: 350px;
     margin: 15px;
 }
 
@@ -142,23 +142,39 @@ body {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin: 0 5px 0 10px;
 }
 
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
+    margin-left: 0;
+}
+
+.score-panel .moves {
+    list-style: none;
+    display: inline-block;
+    margin-left: 0;
 }
 
 .score-panel .displayDifficulty {
     list-style: none;
     display: inline-block;
-    margin: 0 5px 0 25px;
+    margin: 0 5px 0 5px;
+    padding-left: 15px;
+}
+
+.score-panel .timer {
+    margin: 0 5px;
+    padding-left: 15px;
+
 }
 
 .score-panel .restart {
     float: right;
     cursor: pointer;
+    margin-left: 0px;
+    padding-left: 0px;
 }
 
 /*
