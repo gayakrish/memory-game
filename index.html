@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta charset="utf-8">
     <meta name="description" content="">
@@ -8,6 +9,7 @@
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Oxygen">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
 
@@ -18,6 +20,7 @@
       </header>
 
       <div class="topnav" id="myTopnav">
+
         <div class="dropdown">
           <button class="dropbtn" id="difficulty">Difficulty</button>
           <div class="dropdown-content" id="myDifficulty">
@@ -35,7 +38,9 @@
           </div>
         </div>
 
-        <a href="#" id="score">Scoreboard</a>
+        <div class="scoreboard">
+        	<a href="#" id="score">Scoreboard</a>
+        </div>
       </div>
 
       <div class="score-panel">
@@ -47,18 +52,17 @@
         <span class="moves">3</span> Moves
         <span class="displayDifficulty"> Easy </span>
         <span class="timer"> 00:00:00 </span>
-        <div class="restart">
+        <span class="restart">
           <i class="fa fa-repeat"></i>
-        </div>
+        </span>
       </div>
 
       <div class="deck">
         <script src="js/app.js"></script>
       </div>
-    </div>
 
-    <footer>
+    <!-- <footer>
     	<hr>
-    	<p> Icons from <a href="https://www.smashingmagazine.com/2017/03/free-sparkly-icons-ballicons-eps-svg"> Smashing Magazine </a>
+    	<p> Icons from <a href="https://www.smashingmagazine.com/2017/03/free-sparkly-icons-ballicons-eps-svg"> Smashing Magazine </a> -->
   </body>
 </html>

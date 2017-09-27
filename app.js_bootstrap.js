@@ -64,7 +64,7 @@ const hardArray = ["book", "book", "spring", "spring",
             "helmet", "helmet", "shield", "shield",
             "diamond", "diamond", "smart_watch", "smart_watch",
             "archive2", "archive2", "lamp", "lamp",
-            "vr", "vr", "smart_watch", "smart_watch"
+            "vr", "vr", "workplace", "workplace"
             ];
 
 //at launch, initialize and generate board, attach listeners
@@ -92,10 +92,18 @@ function resetBoard() {
 
     cardsArray = shuffle(getDifficultyArray(difficulty));
 
+    output += `<div class="row">`;
+
     for (let i = 0; i < cardsArray.length; i++) {
         var className = cardsArray[i];
-
-        output += `<img src="img/${className}.png" class="card hidden" id="${className}">`
+        if((i!== 0) && (i % 4 === 0)) {
+            output += `</div>
+                        <div class="row">`;
+        }
+        output += `<div class="col-md-3 col-sm-3">
+                    <img src="img/${className}.png" class="card img-responsive hidden" id="${className}">
+                    <img src="img/vr.png" class="card img-responsive open" id="vr1">
+                   </div>`;
     }
 
     // console.log("output string is \n " + output);
