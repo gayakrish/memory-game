@@ -73,7 +73,9 @@ setupNavBarListener();
 initializeScoreBoard();
 
 //to close the dropdown when there is a click elsewhere in the document
-$(document).on("click", hideDropdownMenus);
+$(document).on("click", function(event) {
+    hideDropdownMenus(event);
+});
 
 /*
  * Refresh/Resets the game. Shuffles the cards, displays the grid
@@ -261,7 +263,9 @@ function displayGrid(difficulty) {
  */
 function setUpCardListener() {
     for (let i = 0; i < cardsArray.length; i++) {
-        $(cardsArray[i]).one("click", clickCard);
+        $(cardsArray[i]).one("click", function(event) {
+            clickCard(event);
+        });
     }
 }
 
@@ -269,14 +273,18 @@ function setUpCardListener() {
  * Attach click listener to the NavBar menu items
  */
 function setupNavBarListener() {
-    $(".dropbtn").on("click", selectMenu);
-    $("#score").on("click", printScoreCard);
+    $(".dropbtn").on("click", function(event){
+        selectMenu(event);
+    });
+    $("#score").on("click", function(event) {
+        printScoreCard(event);
+    });
 }
 
 /*
  * Hides the dropdown menus in navbar
  */
-function hideDropdownMenus() {
+function hideDropdownMenus(event) {
     if (!$(event.target).hasClass("show")) {
         $("#myDifficulty").removeClass("show");
         $("#mySettings").removeClass("show");
@@ -287,16 +295,16 @@ function hideDropdownMenus() {
  * Selects difficulty level, settings menu
  */
 function selectMenu(event) {
-    event.stopPropagation();
+     event.stopPropagation();
     if (event.target.matches(".dropbtn")) {
 
         //select difficulty level and generates the board
         let menu = $(event.currentTarget).attr("id");
         if (menu === "difficulty") {
             $("#myDifficulty").addClass("show");
-            $(".level").on("click", function(e) {
-                e.stopPropagation();
-                difficulty = $(e.currentTarget).text();
+            $(".level").on("click", function(event) {
+                event.stopPropagation();
+                difficulty = $(event.currentTarget).text();
                 $("#myDifficulty").removeClass("show");
                 resetBoard();
             });
@@ -306,9 +314,9 @@ function selectMenu(event) {
             $("#mySettings").addClass("show");
 
             //select the color from color picker
-            $("#colorPicker").on("click", function(e) {
-                e.stopPropagation();
-                $("#colorPicker").on("change", function(e) {
+            $("#colorPicker").on("click", function(event) {
+                event.stopPropagation();
+                $("#colorPicker").on("change", function(event) {
                     backgroundColor = $("#colorPicker").val();
                     setBackgroundColor(backgroundColor);
                     $("#mySettings").removeClass("show");
@@ -362,7 +370,7 @@ function initializeScoreBoard() {
 /*
  * Displays the score card in another html
  */
-function printScoreCard() {
+function printScoreCard(e) {
     window.location.href = "score.html";
 }
 
@@ -402,7 +410,8 @@ function updateLocalStorage() {
 function clickCard(event) {
     console.log("card is clicked " + $(event.target).attr('class'));
     startTimer();
-    hideDropdownMenus();
+    hideDropdownMenus(event);
+
     event.stopPropagation();
 
     if (openCards.length < 2) {
@@ -472,8 +481,12 @@ function displayBoardWin() {
 function setCardMismatch(card1, card2) {
     $(card1).addClass("mismatch");
     $(card2).addClass("mismatch");
-    $(card1).one("click", clickCard);
-    $(card2).one("click", clickCard);
+    $(card1).one("click", function(event){
+        clickCard(event);
+    });
+    $(card2).one("click", function(event){
+        clickCard(event);
+    });
 }
 
 /*
