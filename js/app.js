@@ -60,12 +60,12 @@ const mediumArray = ["book", "spring", "recycling", "switch",
 ];
 
 const hardArray = ["book", "book", "spring", "spring",
-            "recycling", "recycling", "switch", "switch",
-            "helmet", "helmet", "shield", "shield",
-            "diamond", "diamond", "smart_watch", "smart_watch",
-            "archive2", "archive2", "lamp", "lamp",
-            "vr", "vr", "smart_watch", "smart_watch"
-            ];
+    "recycling", "recycling", "switch", "switch",
+    "helmet", "helmet", "shield", "shield",
+    "diamond", "diamond", "smart_watch", "smart_watch",
+    "archive2", "archive2", "lamp", "lamp",
+    "vr", "vr", "smart_watch", "smart_watch"
+];
 
 //at launch, initialize and generate board, attach listeners
 resetBoard();
@@ -152,7 +152,7 @@ function resetStar() {
  * Start the timer
  */
 function startTimer() {
-    if(!isTimer) {
+    if (!isTimer) {
         isTimer = true;
         let startTime = new Date().getTime();
 
@@ -198,7 +198,7 @@ function displayTimer(startTime) {
  * Resets the timer
  */
 function resetTimer() {
-    if(isTimer) {
+    if (isTimer) {
         console.log("inside clear interval " + timer);
         clearInterval(timer);
         timerValue = "00:00:00";
