@@ -16,9 +16,11 @@ How to Play:
 9. Difficulty level and background color are stored in HTML LocalStorage to enable the player to come back to the same settings.
 
 Testing:
+
 This game has been tested on the following browsers: Google Chrome, Mozilla Firefox, Opera, Microsoft Edge
 Chrome Dev Tools has been used to emulate the different screen sizes for testing the game.
 
-Copyright
+Copyright:
+
 Game icon images have been downloaded from https://www.smashingmagazine.com/2017/03/free-sparkly-icons-ballicons-eps-svg.
 
