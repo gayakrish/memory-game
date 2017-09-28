@@ -12,7 +12,6 @@ const medium = "Medium";
 const hard = "Hard";
 
 //default difficulty level
-//TODO: store in local storage to revert back to same difficulty on refresh
 let difficulty = "Easy";
 
 /*
@@ -34,7 +33,6 @@ let isTimer = false;
 let timerValue;
 
 //default background color
-//TODO: store in local storage to revert back to same color on refresh
 let backgroundColor = "#d6fbfe";
 
 /* Defined local storage and keys to store the score.
@@ -69,6 +67,8 @@ const hardArray = ["book", "book", "spring", "spring",
 
 //at launch, initialize and generate board, attach listeners
 resetBoard();
+saveBackgroundColor(backgroundColor);
+saveDifficultyLevel(difficulty);
 setupNavBarListener();
 initializeScoreBoard();
 
@@ -92,6 +92,10 @@ function resetBoard() {
     resetStar();
     resetTimer();
 
+    backgroundColor = getBackgroundColor();
+    setBackgroundColor(backgroundColor);
+
+    difficulty = getDifficultyLevel();
     cardsArray = shuffle(getDifficultyArray(difficulty));
 
     for (let i = 0; i < cardsArray.length; i++) {
@@ -100,14 +104,62 @@ function resetBoard() {
         output += `<img src="img/${className}.png" class="card hidden" id="${className}">`
     }
 
-    // console.log("output string is \n " + output);
-
-    displayGrid(difficulty);
     $(".deck").html(`</div>${output}`);
-    console.log("array is " + $(".deck").children().find('img'));
+    // console.log("output string is \n " + output);
     cardsArray = $(".deck").children().toArray();
     setUpCardListener();
+    displayGrid(difficulty);
     $(".restart").on("click", resetBoard);
+}
+
+/*
+ * Writes the background color to the localStorage
+ */
+function saveBackgroundColor(backgroundColor) {
+    if(localStorage) {
+        // console.log("saving color to localStorage");
+        localStorage.setItem(colorKey, backgroundColor);
+    }
+}
+
+/*
+ * Retrieves the background color from the localStorage
+ */
+function getBackgroundColor() {
+    let color;
+    if(localStorage) {
+        color = localStorage.getItem(colorKey);
+    }
+    // console.log("color from localStorage is " + color);
+    if(color === null || color === 'undefined') {
+        color = backgroundColor;
+    }
+    return color;
+}
+
+/*
+ * Writes the difficulty level to localStorage
+ */
+function saveDifficultyLevel(difficulty) {
+    if(localStorage) {
+        // console.log("saving difficulty to localStorage");
+        localStorage.setItem(difficultyKey, difficulty);
+    }
+}
+
+/*
+ * Retrieves the difficulty level from LocalStorage
+ */
+function getDifficultyLevel() {
+    let savedDifficulty;
+    if(localStorage) {
+        savedDifficulty = localStorage.getItem(difficultyKey);
+    }
+    // console.log("difficulty from localStorage is " + savedDifficulty);
+    if(savedDifficulty === null || savedDifficulty === 'undefined') {
+        savedDifficulty = difficulty;
+    }
+    return savedDifficulty;
 }
 
 /*
@@ -201,7 +253,7 @@ function displayTimer(startTime) {
  */
 function resetTimer() {
     if (isTimer) {
-        console.log("inside clear interval " + timer);
+        // console.log("inside clear interval " + timer);
         clearInterval(timer);
         timerValue = "00:00:00";
         $(".timer").text("00:00:00");
@@ -305,6 +357,7 @@ function selectMenu(event) {
             $(".level").on("click", function(event) {
                 event.stopPropagation();
                 difficulty = $(event.currentTarget).text();
+                saveDifficultyLevel(difficulty);
                 $("#myDifficulty").removeClass("show");
                 resetBoard();
             });
@@ -319,6 +372,8 @@ function selectMenu(event) {
                 $("#colorPicker").on("change", function(event) {
                     backgroundColor = $("#colorPicker").val();
                     setBackgroundColor(backgroundColor);
+                    saveBackgroundColor(backgroundColor);
+                    // console.log("saved backgroundColor " + getBackgroundColor());
                     $("#mySettings").removeClass("show");
                 });
             });
@@ -331,6 +386,7 @@ function selectMenu(event) {
  */
 function setBackgroundColor(color) {
     $(".deck").css("background-color", color);
+    saveBackgroundColor(color);
 }
 
 /*
@@ -408,7 +464,7 @@ function updateLocalStorage() {
  * If the cards do not match, appropriate animation is performed and cards are closed.
  */
 function clickCard(event) {
-    console.log("card is clicked " + $(event.target).attr('class'));
+    // console.log("card is clicked " + $(event.target).attr('class'));
     startTimer();
     hideDropdownMenus(event);
 
